@@ -1,0 +1,1403 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KAMS Week 5 Alpha</title>
+    <style>
+:root {
+  color-scheme: light;
+  --ink: #152321;
+  --muted: #657471;
+  --line: #dbe7e4;
+  --paper: #ffffff;
+  --wash: #f3f8f6;
+  --teal: #007c72;
+  --teal-dark: #005f58;
+  --teal-soft: #dff2ed;
+  --yellow: #f0b84a;
+  --red: #c94f4f;
+  --red-soft: #fff1ed;
+  --green: #3d9c6c;
+  --blue: #30649a;
+  --shadow: 0 26px 80px rgba(19, 50, 48, 0.23);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  background:
+    linear-gradient(135deg, rgba(0, 124, 114, 0.18), transparent 35%),
+    linear-gradient(225deg, rgba(201, 79, 79, 0.12), transparent 38%),
+    #f7f0e6;
+}
+
+button,
+summary {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+
+.phone {
+  position: relative;
+  width: min(100%, 404px);
+  height: min(860px, calc(100vh - 40px));
+  min-height: 700px;
+  border: 10px solid #111817;
+  border-radius: 34px;
+  overflow: hidden;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.phone-status {
+  height: 32px;
+  padding: 8px 22px 0;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.screen {
+  display: none;
+  height: calc(100% - 104px);
+  overflow-y: auto;
+  padding: 18px;
+  scrollbar-width: none;
+}
+
+.screen::-webkit-scrollbar {
+  display: none;
+}
+
+.screen.active {
+  display: block;
+}
+
+.home-header,
+.topbar,
+.panel-heading,
+.ldl-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.home-header {
+  margin-bottom: 18px;
+}
+
+.home-header p,
+.ldl-heading p,
+.kicker {
+  margin: 0;
+  color: var(--teal-dark);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+p {
+  letter-spacing: 0;
+}
+
+h1,
+h2 {
+  margin: 0;
+}
+
+.home-header h1 {
+  margin-top: 3px;
+  max-width: 15rem;
+  font-size: 1.42rem;
+  line-height: 1.12;
+}
+
+.topbar {
+  min-height: 42px;
+  margin-bottom: 16px;
+}
+
+.topbar h1 {
+  font-size: 1.1rem;
+}
+
+.icon-button {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  display: inline-grid;
+  place-items: center;
+  color: var(--teal-dark);
+  background: #fff;
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: var(--teal);
+  font-size: 0.8rem;
+  font-weight: 900;
+}
+
+.priority-card,
+.message,
+.brochure-link {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  text-align: left;
+  color: var(--ink);
+  background: #fff;
+}
+
+.priority-card {
+  border-color: rgba(201, 79, 79, 0.32);
+  background: var(--red-soft);
+}
+
+.card-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  color: var(--red);
+  background: #fff;
+}
+
+strong {
+  display: block;
+}
+
+small {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.chevron {
+  color: var(--muted);
+}
+
+.home-grid {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.tile {
+  position: relative;
+  min-height: 112px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px;
+  display: grid;
+  align-content: space-between;
+  justify-items: start;
+  color: var(--ink);
+  text-align: left;
+  background: #fff;
+}
+
+.tile svg {
+  color: var(--blue);
+}
+
+.tile span:not(.tile-badge) {
+  margin-top: 12px;
+  font-weight: 900;
+}
+
+.tile-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: var(--red);
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.panel {
+  margin-top: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  background: #fff;
+}
+
+.panel-heading {
+  margin-bottom: 12px;
+}
+
+.panel-heading h2 {
+  font-size: 1rem;
+}
+
+.panel-heading span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.record-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  padding: 8px 0;
+}
+
+.record-dot,
+.unread-dot,
+.read-dot {
+  width: 11px;
+  height: 11px;
+  margin-top: 5px;
+  border-radius: 999px;
+}
+
+.record-dot.alert,
+.unread-dot {
+  background: var(--red);
+}
+
+.record-dot.ok {
+  background: var(--green);
+}
+
+.read-dot {
+  background: #c8d5d1;
+}
+
+.segmented {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.segmented button {
+  min-height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--muted);
+  background: #fff;
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.segmented .active {
+  color: #fff;
+  border-color: var(--teal);
+  background: var(--teal);
+}
+
+.message {
+  min-height: 78px;
+  margin-bottom: 10px;
+}
+
+.message.urgent {
+  border-color: rgba(0, 124, 114, 0.3);
+  background: #f2fbf8;
+}
+
+.status-pill {
+  border-radius: 999px;
+  padding: 6px 9px;
+  color: #fff;
+  background: var(--teal);
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.ldl-card {
+  border-radius: 8px;
+  padding: 16px;
+  color: #fff;
+  background: linear-gradient(135deg, #005f58, #2f6a94);
+}
+
+.ldl-heading h2 {
+  max-width: 15rem;
+  margin-top: 4px;
+  font-size: 1.34rem;
+  line-height: 1.15;
+}
+
+.ldl-heading p {
+  color: #ccece6;
+}
+
+.zone-badge {
+  width: 88px;
+  min-height: 88px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.zone-badge strong {
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.zone-badge span {
+  font-size: 0.7rem;
+  font-weight: 900;
+}
+
+.threshold {
+  margin-top: 18px;
+}
+
+.bar {
+  position: relative;
+  height: 12px;
+  border-radius: 999px;
+  display: grid;
+  grid-template-columns: 62% 10% 28%;
+  overflow: visible;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.bar span {
+  min-width: 0;
+}
+
+.bar .green {
+  border-radius: 999px 0 0 999px;
+  background: var(--green);
+}
+
+.bar .yellow {
+  background: var(--yellow);
+}
+
+.bar .red {
+  border-radius: 0 999px 999px 0;
+  background: var(--red);
+}
+
+.bar i {
+  position: absolute;
+  top: -8px;
+  width: 4px;
+  height: 28px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(21, 35, 33, 0.22);
+}
+
+.bar-labels {
+  margin-top: 9px;
+  display: flex;
+  justify-content: space-between;
+  color: #e8fbf7;
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.threshold-note {
+  margin: 10px 0 0;
+  color: #eef9f7;
+  font-size: 0.86rem;
+  line-height: 1.38;
+}
+
+.result-values {
+  margin-top: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.value {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+  background: #fff;
+}
+
+.value.high {
+  border-color: rgba(201, 79, 79, 0.36);
+  background: var(--red-soft);
+}
+
+.value > span {
+  min-width: 54px;
+  border-radius: 8px;
+  padding: 8px;
+  text-align: center;
+  color: var(--teal-dark);
+  background: var(--teal-soft);
+  font-weight: 900;
+}
+
+.value.high > span {
+  color: #fff;
+  background: var(--red);
+}
+
+.clinic-intro {
+  border: 1px solid rgba(0, 124, 114, 0.24);
+  border-radius: 8px;
+  padding: 16px;
+  background: var(--teal-soft);
+}
+
+.clinic-intro h2 {
+  margin-top: 4px;
+  font-size: 1.25rem;
+  line-height: 1.2;
+}
+
+.clinic-intro p:last-child {
+  margin: 8px 0 0;
+  color: #40524f;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.search-box {
+  margin-top: 14px;
+  display: grid;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.search-box input {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0 12px;
+  color: var(--ink);
+  background: #fff;
+  font: inherit;
+}
+
+.map-card {
+  position: relative;
+  height: 210px;
+  margin-top: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(0, 124, 114, 0.18), transparent 45%),
+    linear-gradient(225deg, rgba(48, 100, 154, 0.18), transparent 48%),
+    #eef5f2;
+}
+
+.map-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(21, 35, 33, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(21, 35, 33, 0.08) 1px, transparent 1px);
+  background-size: 34px 34px;
+  transform: rotate(-8deg) scale(1.15);
+}
+
+.map-pin {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  border: 3px solid #fff;
+  border-radius: 999px 999px 999px 2px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: var(--blue);
+  box-shadow: 0 8px 18px rgba(21, 35, 33, 0.22);
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.map-pin span {
+  transform: rotate(45deg);
+  font-weight: 900;
+}
+
+.map-pin.selected {
+  background: var(--teal);
+}
+
+.patient-dot {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 3px solid #fff;
+  border-radius: 999px;
+  background: var(--red);
+  box-shadow: 0 0 0 6px rgba(201, 79, 79, 0.18);
+  transform: translate(-50%, -50%);
+}
+
+.clinic-list {
+  margin-top: 14px;
+  display: grid;
+  gap: 9px;
+}
+
+.clinic-card {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink);
+  text-align: left;
+  background: #fff;
+}
+
+.clinic-card.selected {
+  border-color: rgba(0, 124, 114, 0.36);
+  background: #f1fbf8;
+}
+
+.clinic-card[hidden] {
+  display: none;
+}
+
+.clinic-number {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: var(--teal);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.selected-clinic {
+  margin-top: 14px;
+  border: 1px solid rgba(0, 124, 114, 0.28);
+  border-radius: 8px;
+  padding: 12px;
+  display: grid;
+  gap: 3px;
+  background: var(--wash);
+}
+
+.selected-clinic span {
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+.faq {
+  margin-top: 16px;
+}
+
+.faq h2 {
+  margin-bottom: 10px;
+  font-size: 1.05rem;
+}
+
+details {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  background: #fff;
+}
+
+summary {
+  padding: 13px 14px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+details p {
+  margin: 0;
+  padding: 0 14px 14px;
+  color: #43514f;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.brochure-link {
+  margin-top: 12px;
+  grid-template-columns: 1fr auto;
+  color: var(--teal-dark);
+  font-weight: 900;
+  background: var(--teal-soft);
+}
+
+.brochure {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 18px;
+  background: #fff;
+}
+
+.brochure h2 {
+  margin-top: 4px;
+  font-size: 1.35rem;
+}
+
+.brochure p,
+.brochure li {
+  color: #465451;
+  line-height: 1.5;
+}
+
+.brochure ul {
+  padding-left: 20px;
+}
+
+.confirmation {
+  padding: 32px 16px 22px;
+  text-align: center;
+}
+
+.success-icon {
+  width: 74px;
+  height: 74px;
+  margin: 0 auto 18px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: var(--teal);
+}
+
+.success-icon svg {
+  width: 38px;
+  height: 38px;
+}
+
+.confirmation h2 {
+  font-size: 1.55rem;
+}
+
+.confirmation p {
+  max-width: 280px;
+  margin: 10px auto 0;
+  color: var(--muted);
+  line-height: 1.48;
+}
+
+.steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+.steps li {
+  position: relative;
+  padding-left: 28px;
+  color: var(--muted);
+  font-weight: 900;
+}
+
+.steps li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #b8c8c4;
+  border-radius: 999px;
+}
+
+.steps .done {
+  color: var(--ink);
+}
+
+.steps .done::before {
+  border-color: var(--teal);
+  background: var(--teal);
+  box-shadow: inset 0 0 0 4px #fff;
+}
+
+.secondary-action,
+.floating-action,
+.primary-action {
+  width: 100%;
+  min-height: 50px;
+  border-radius: 8px;
+  font-weight: 900;
+}
+
+.primary-action {
+  margin-top: 14px;
+  border: 0;
+  color: #fff;
+  background: var(--teal);
+}
+
+.secondary-action {
+  margin-top: 16px;
+  border: 1px solid var(--line);
+  color: var(--teal-dark);
+  background: #fff;
+}
+
+.floating-action {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 82px;
+  width: calc(100% - 36px);
+  border: 0;
+  display: none;
+  color: #fff;
+  background: var(--teal);
+  box-shadow: 0 14px 26px rgba(0, 95, 88, 0.28);
+}
+
+.floating-action.visible {
+  display: block;
+}
+
+.sticky-space {
+  height: 76px;
+}
+
+.bottom-nav {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 72px;
+  border-top: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(10px);
+}
+
+.nav-item {
+  position: relative;
+  border: 0;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 4px;
+  color: #74817f;
+  background: transparent;
+  font-size: 0.7rem;
+  font-weight: 900;
+}
+
+.nav-item.active {
+  color: var(--teal-dark);
+}
+
+.nav-dot {
+  position: absolute;
+  top: 12px;
+  right: 28%;
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: var(--red);
+}
+
+button:hover,
+summary:hover {
+  filter: brightness(0.98);
+}
+
+@media (max-width: 460px) {
+  .shell {
+    padding: 0;
+  }
+
+  .phone {
+    width: 100%;
+    height: 100vh;
+    min-height: 640px;
+    border: 0;
+    border-radius: 0;
+  }
+}
+
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <section class="phone" aria-label="HealthBuddy FH referral alpha">
+        <div class="phone-status" aria-hidden="true">
+          <span>15:45</span>
+          <span>5G 98%</span>
+        </div>
+
+        <section class="screen active" data-screen="home" aria-label="Home">
+          <header class="home-header">
+            <div>
+              <p>HealthBuddy</p>
+              <h1>Good afternoon, Amina</h1>
+            </div>
+            <button class="icon-button" type="button" aria-label="Profile">
+              <span class="avatar">AT</span>
+            </button>
+          </header>
+
+          <button class="priority-card" type="button" data-go="inbox">
+            <span class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M5 4h14v16H5z" /><path d="M8 8h8M8 12h8M8 16h5" /></svg>
+            </span>
+            <span>
+              <strong>Blood test results ready</strong>
+              <small>New update from SingHealth Polyclinic</small>
+            </span>
+            <span class="chevron" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" /></svg>
+            </span>
+          </button>
+
+          <div class="home-grid" aria-label="HealthBuddy services">
+            <button class="tile" type="button" data-go="inbox">
+              <span class="tile-badge" aria-hidden="true">1</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4zM4 8l8 6 8-6" /></svg>
+              <span>Inbox</span>
+              <small>New result</small>
+            </button>
+            <button class="tile" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h4" /></svg>
+              <span>Records</span>
+              <small>Lab reports</small>
+            </button>
+            <button class="tile" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3v4M16 3v4M4 9h16M6 5h12a2 2 0 0 1 2 2v12H4V7a2 2 0 0 1 2-2Z" /></svg>
+              <span>Appointments</span>
+              <small>2 upcoming</small>
+            </button>
+            <button class="tile" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-4.5 7-11a4 4 0 0 0-7-2.6A4 4 0 0 0 5 10c0 6.5 7 11 7 11Z" /></svg>
+              <span>Health tips</span>
+              <small>Updated</small>
+            </button>
+          </div>
+
+          <section class="panel" aria-label="Recent health records">
+            <div class="panel-heading">
+              <h2>Recent records</h2>
+              <span>30 Jun</span>
+            </div>
+            <article class="record-row">
+              <span class="record-dot alert"></span>
+              <div>
+                <strong>Lipid panel</strong>
+                <small>LDL-C review recommended</small>
+              </div>
+            </article>
+            <article class="record-row">
+              <span class="record-dot ok"></span>
+              <div>
+                <strong>Blood pressure</strong>
+                <small>Within usual range</small>
+              </div>
+            </article>
+          </section>
+        </section>
+
+        <section class="screen" data-screen="inbox" aria-label="Inbox">
+          <header class="topbar">
+            <button class="icon-button" type="button" data-go="home" aria-label="Back">
+              <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" /></svg>
+            </button>
+            <h1>Inbox</h1>
+            <button class="icon-button" type="button" aria-label="Search">
+              <svg viewBox="0 0 24 24"><path d="m21 21-4.3-4.3M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z" /></svg>
+            </button>
+          </header>
+
+          <div class="segmented" aria-label="Inbox categories">
+            <button class="active" type="button">Updates</button>
+            <button type="button">Appointments</button>
+            <button type="button">Letters</button>
+          </div>
+
+          <button class="message urgent" type="button" data-go="results">
+            <span class="unread-dot" aria-hidden="true"></span>
+            <span class="message-copy">
+              <strong>Blood test results are ready</strong>
+              <small>SingHealth Polyclinic - Today, 2:18 PM</small>
+            </span>
+            <span class="status-pill">New</span>
+          </button>
+
+          <button class="message" type="button">
+            <span class="read-dot" aria-hidden="true"></span>
+            <span class="message-copy">
+              <strong>Medication collection window</strong>
+              <small>Pharmacy - Yesterday</small>
+            </span>
+            <span class="chevron" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" /></svg>
+            </span>
+          </button>
+
+          <button class="message" type="button">
+            <span class="read-dot" aria-hidden="true"></span>
+            <span class="message-copy">
+              <strong>Dental check reminder</strong>
+              <small>National Dental Centre - 26 Jun</small>
+            </span>
+            <span class="chevron" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" /></svg>
+            </span>
+          </button>
+        </section>
+
+        <section class="screen results-screen" data-screen="results" aria-label="Blood test results">
+          <header class="topbar">
+            <button class="icon-button" type="button" data-go="inbox" aria-label="Back">
+              <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" /></svg>
+            </button>
+            <h1>Blood Results</h1>
+            <button class="icon-button" type="button" aria-label="Download">
+              <svg viewBox="0 0 24 24"><path d="M12 3v12M8 11l4 4 4-4M5 21h14" /></svg>
+            </button>
+          </header>
+
+          <section class="ldl-card" aria-label="LDL cholesterol result zone">
+            <div class="ldl-heading">
+              <div>
+                <p>Lipid panel</p>
+                <h2>LDL-C requires FH review</h2>
+              </div>
+              <div class="zone-badge">
+                <strong>Red</strong>
+                <span>5.5+</span>
+              </div>
+            </div>
+
+            <div class="threshold" aria-label="LDL threshold bar">
+              <div class="bar">
+                <span class="green"></span>
+                <span class="yellow"></span>
+                <span class="red"></span>
+                <i style="left: 81%"></i>
+              </div>
+              <div class="bar-labels">
+                <span>0-5</span>
+                <span>5-5.5</span>
+                <span>5.5+</span>
+              </div>
+              <p class="threshold-note">Your result falls in the red FH review zone. The exact number is kept inside the full lab record.</p>
+            </div>
+          </section>
+
+          <section class="result-values" aria-label="Result values">
+            <article class="value high">
+              <div>
+                <strong>LDL cholesterol zone</strong>
+                <small>Green: 0-5, yellow: 5-5.5, red: 5.5+</small>
+              </div>
+              <span>Red</span>
+            </article>
+            <article class="value">
+              <div>
+                <strong>HDL cholesterol</strong>
+                <small>Usual range</small>
+              </div>
+              <span>OK</span>
+            </article>
+            <article class="value">
+              <div>
+                <strong>Triglycerides</strong>
+                <small>Usual range</small>
+              </div>
+              <span>OK</span>
+            </article>
+          </section>
+
+          <section class="faq" aria-label="FH referral FAQs">
+            <h2>Common questions</h2>
+            <details open>
+              <summary>Why am I seeing this referral option?</summary>
+              <p>Your LDL-C result is in the red FH review zone. A GP can check your full result, family history, and medication context before deciding on referral.</p>
+            </details>
+            <details>
+              <summary>Does this mean I have FH?</summary>
+              <p>No. This app flags risk only. Familial hypercholesterolemia needs clinical review and, if appropriate, genetic assessment.</p>
+            </details>
+            <details>
+              <summary>Why does early testing matter?</summary>
+              <p>Earlier review can lead to earlier treatment and may help protect close family members through cascade screening.</p>
+            </details>
+            <details>
+              <summary>Can I self-refer?</summary>
+              <p>No. The GP remains the clinical decision-maker and sends the referral if it is appropriate.</p>
+            </details>
+          </section>
+
+          <button class="brochure-link" type="button" data-go="brochure">
+            Read the FH information brochure
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+          </button>
+
+          <div class="sticky-space"></div>
+        </section>
+
+        <section class="screen results-screen" data-screen="brochure" aria-label="FH information brochure">
+          <header class="topbar">
+            <button class="icon-button" type="button" data-go="results" aria-label="Back">
+              <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" /></svg>
+            </button>
+            <h1>FH Brochure</h1>
+            <span></span>
+          </header>
+
+          <section class="brochure">
+            <p class="kicker">Familial hypercholesterolemia</p>
+            <h2>What this result could mean</h2>
+            <p>FH is an inherited condition that can cause high LDL cholesterol from a young age. Many people feel well, so a high LDL result can be an early signal to discuss with a GP.</p>
+            <ul>
+              <li>Bring this result to your GP review.</li>
+              <li>Share any known family history of high cholesterol or early heart disease.</li>
+              <li>Ask whether Genetic Assessment Centre referral is appropriate.</li>
+            </ul>
+          </section>
+
+          <div class="sticky-space"></div>
+        </section>
+
+        <section class="screen clinic-screen" data-screen="clinic" aria-label="Find nearby GP clinic">
+          <header class="topbar">
+            <button class="icon-button" type="button" data-go="results" aria-label="Back">
+              <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" /></svg>
+            </button>
+            <h1>Choose GP Clinic</h1>
+            <span></span>
+          </header>
+
+          <section class="clinic-intro">
+            <p class="kicker">Nearby clinics</p>
+            <h2>Pick a GP before sending the request</h2>
+            <p>HealthBuddy can use existing location services to suggest nearby GP clinics. Select a clinic so the referral request goes to the right GP for review.</p>
+          </section>
+
+          <label class="search-box">
+            <span>Search clinic</span>
+            <input id="clinic-search" type="search" placeholder="Type a clinic name or suburb" autocomplete="off" />
+          </label>
+
+          <section class="map-card" aria-label="Interactive nearby clinic map">
+            <div class="map-grid" aria-hidden="true"></div>
+            <button class="map-pin selected" type="button" data-clinic="singhealth" style="left: 58%; top: 44%;" aria-label="Select SingHealth Polyclinic">
+              <span>1</span>
+            </button>
+            <button class="map-pin" type="button" data-clinic="tampines" style="left: 28%; top: 34%;" aria-label="Select Tampines Family Clinic">
+              <span>2</span>
+            </button>
+            <button class="map-pin" type="button" data-clinic="eastcare" style="left: 66%; top: 68%;" aria-label="Select EastCare GP Group">
+              <span>3</span>
+            </button>
+            <div class="patient-dot" style="left: 48%; top: 57%;" aria-hidden="true"></div>
+          </section>
+
+          <section class="clinic-list" aria-label="Clinic search results">
+            <button class="clinic-card selected" type="button" data-clinic="singhealth">
+              <span class="clinic-number">1</span>
+              <span>
+                <strong>SingHealth Polyclinic - Bedok</strong>
+                <small>1.2 km away - 6643 6969</small>
+              </span>
+            </button>
+            <button class="clinic-card" type="button" data-clinic="tampines">
+              <span class="clinic-number">2</span>
+              <span>
+                <strong>Tampines Family Clinic</strong>
+                <small>2.4 km away - 6781 2288</small>
+              </span>
+            </button>
+            <button class="clinic-card" type="button" data-clinic="eastcare">
+              <span class="clinic-number">3</span>
+              <span>
+                <strong>EastCare GP Group</strong>
+                <small>3.1 km away - 6447 3344</small>
+              </span>
+            </button>
+          </section>
+
+          <section class="selected-clinic" aria-live="polite">
+            <small>Selected clinic</small>
+            <strong id="selected-clinic-name">SingHealth Polyclinic - Bedok</strong>
+            <span id="selected-clinic-phone">6643 6969</span>
+          </section>
+
+          <button class="primary-action" type="button" id="send-referral">Send request to selected GP</button>
+        </section>
+
+        <section class="screen" data-screen="confirmation" aria-label="Referral request confirmation">
+          <header class="topbar">
+            <button class="icon-button" type="button" data-go="home" aria-label="Back home">
+              <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" /></svg>
+            </button>
+            <h1>Referral Request</h1>
+            <span></span>
+          </header>
+
+          <section class="confirmation">
+            <span class="success-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="m5 12 5 5L20 7" /></svg>
+            </span>
+            <h2>Request sent to your GP</h2>
+            <p><span id="confirmation-clinic">Your selected GP</span> will review the LDL-C zone result and decide whether to send a GAC referral.</p>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <h2>Status</h2>
+              <span id="request-time">Today</span>
+            </div>
+            <ol class="steps">
+              <li class="done">Referral request submitted to selected GP</li>
+              <li>GP clinical review</li>
+              <li>GAC appointment options if approved</li>
+            </ol>
+          </section>
+
+          <button class="secondary-action" type="button" id="reset-demo">Reset demo</button>
+        </section>
+
+        <button class="floating-action" type="button" id="ask-referral">
+          Ask GP for referral
+        </button>
+
+        <nav class="bottom-nav" aria-label="Primary navigation">
+          <button class="nav-item active" type="button" data-go="home" aria-label="Home">
+            <svg viewBox="0 0 24 24"><path d="M4 11 12 4l8 7v9H6v-6h12" /></svg>
+            <span>Home</span>
+          </button>
+          <button class="nav-item" type="button" data-go="inbox" aria-label="Inbox">
+            <span class="nav-dot" aria-hidden="true"></span>
+            <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM4 8l8 6 8-6" /></svg>
+            <span>Inbox</span>
+          </button>
+          <button class="nav-item" type="button" aria-label="Bookings">
+            <svg viewBox="0 0 24 24"><path d="M8 3v4M16 3v4M4 9h16M6 5h12a2 2 0 0 1 2 2v12H4V7a2 2 0 0 1 2-2Z" /></svg>
+            <span>Bookings</span>
+          </button>
+          <button class="nav-item" type="button" aria-label="More">
+            <svg viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M19 12h.01" /></svg>
+            <span>More</span>
+          </button>
+        </nav>
+      </section>
+    </main>
+
+    <script>
+const screens = Array.from(document.querySelectorAll(".screen"));
+const navItems = Array.from(document.querySelectorAll(".nav-item"));
+const floatingAction = document.querySelector("#ask-referral");
+const resetButton = document.querySelector("#reset-demo");
+const sendReferralButton = document.querySelector("#send-referral");
+const clinicSearch = document.querySelector("#clinic-search");
+const clinicCards = Array.from(document.querySelectorAll(".clinic-card"));
+const clinicPins = Array.from(document.querySelectorAll(".map-pin"));
+const selectedClinicName = document.querySelector("#selected-clinic-name");
+const selectedClinicPhone = document.querySelector("#selected-clinic-phone");
+const confirmationClinic = document.querySelector("#confirmation-clinic");
+const requestTime = document.querySelector("#request-time");
+const storageKey = "kams-week5-fh-referral-request";
+const clinics = {
+  singhealth: {
+    name: "SingHealth Polyclinic - Bedok",
+    phone: "6643 6969",
+  },
+  tampines: {
+    name: "Tampines Family Clinic",
+    phone: "6781 2288",
+  },
+  eastcare: {
+    name: "EastCare GP Group",
+    phone: "6447 3344",
+  },
+};
+let selectedClinicId = "singhealth";
+
+function activeScreenName() {
+  const active = document.querySelector(".screen.active");
+  return active ? active.dataset.screen : "home";
+}
+
+function updateFloatingAction(screenName) {
+  const visible = screenName === "results" || screenName === "brochure";
+  floatingAction.classList.toggle("visible", visible);
+}
+
+function updateNavigation(screenName) {
+  navItems.forEach((item) => {
+    item.classList.toggle("active", item.dataset.go === screenName);
+  });
+}
+
+function showScreen(screenName) {
+  screens.forEach((screen) => {
+    screen.classList.toggle("active", screen.dataset.screen === screenName);
+  });
+  updateFloatingAction(screenName);
+  updateNavigation(screenName);
+}
+
+function selectClinic(clinicId) {
+  if (!clinics[clinicId]) return;
+  selectedClinicId = clinicId;
+
+  clinicCards.forEach((card) => {
+    card.classList.toggle("selected", card.dataset.clinic === clinicId);
+  });
+  clinicPins.forEach((pin) => {
+    pin.classList.toggle("selected", pin.dataset.clinic === clinicId);
+  });
+
+  selectedClinicName.textContent = clinics[clinicId].name;
+  selectedClinicPhone.textContent = clinics[clinicId].phone;
+}
+
+function filterClinics(query) {
+  const normalized = query.trim().toLowerCase();
+  clinicCards.forEach((card) => {
+    const clinic = clinics[card.dataset.clinic];
+    const visible =
+      !normalized ||
+      clinic.name.toLowerCase().includes(normalized) ||
+      clinic.phone.toLowerCase().includes(normalized);
+    card.hidden = !visible;
+  });
+}
+
+function saveReferralRequest() {
+  const now = new Date();
+  const clinic = clinics[selectedClinicId];
+  const request = {
+    patient: "Amina Tan",
+    source: "Existing SingHealth lipid panel record",
+    rule: "LDL-C red zone: 5.5+ mmol/L",
+    ldl: "Red zone",
+    clinic: clinic.name,
+    phone: clinic.phone,
+    action: "Send request to selected GP",
+    status: "Submitted for GP clinical review",
+    timeLabel: now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+  };
+
+  localStorage.setItem(storageKey, JSON.stringify(request));
+  requestTime.textContent = request.timeLabel;
+  confirmationClinic.textContent = clinic.name;
+  floatingAction.textContent = "View referral request";
+  showScreen("confirmation");
+}
+
+function restoreReferralState() {
+  const saved = JSON.parse(localStorage.getItem(storageKey) || "null");
+  if (!saved) return;
+
+  requestTime.textContent = saved.timeLabel || "Today";
+  if (saved.clinic) confirmationClinic.textContent = saved.clinic;
+  floatingAction.textContent = "View referral request";
+}
+
+document.addEventListener("click", (event) => {
+  const target = event.target.closest("[data-go]");
+  if (!target) return;
+
+  showScreen(target.dataset.go);
+});
+
+floatingAction.addEventListener("click", () => {
+  const saved = localStorage.getItem(storageKey);
+  if (saved) {
+    showScreen("confirmation");
+    return;
+  }
+  showScreen("clinic");
+});
+
+clinicCards.forEach((card) => {
+  card.addEventListener("click", () => selectClinic(card.dataset.clinic));
+});
+
+clinicPins.forEach((pin) => {
+  pin.addEventListener("click", () => selectClinic(pin.dataset.clinic));
+});
+
+clinicSearch.addEventListener("input", () => filterClinics(clinicSearch.value));
+
+sendReferralButton.addEventListener("click", saveReferralRequest);
+
+resetButton.addEventListener("click", () => {
+  localStorage.removeItem(storageKey);
+  floatingAction.textContent = "Ask GP for referral";
+  clinicSearch.value = "";
+  filterClinics("");
+  selectClinic("singhealth");
+  showScreen("home");
+});
+
+selectClinic(selectedClinicId);
+restoreReferralState();
+updateFloatingAction(activeScreenName());
+
+    </script>
+  </body>
+</html>
